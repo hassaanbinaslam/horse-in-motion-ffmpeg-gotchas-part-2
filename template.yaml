@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  ffmpeg-lambda-demo
+  A simple Lambda function to process video with FFmpeg.
+
+Globals:
+  Function:
+    Timeout: 60 # Set a longer timeout for video processing
+    MemorySize: 512 # Provide enough memory
+
+Resources:
+  # The S3 bucket where our output videos will be stored
+  OutputBucket:
+    Type: AWS::S3::Bucket
+
+  # The Lambda function that will run our code
+  FFmpegFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: app.lambda_handler
+      Runtime: python3.13
+      Architectures:
+        - x86_64
+
+      # Pass the bucket name to the function as an environment variable
+      Environment:
+        Variables:
+          OUTPUT_BUCKET: !Ref OutputBucket
+
+      # Give the function permission to write to the S3 bucket
+      Policies:
+        - S3WritePolicy:
+            BucketName: !Ref OutputBucket
+
+Outputs:
+  OutputBucketName:
+    Description: "Name of the S3 bucket for output videos"
+    Value: !Ref OutputBucket
