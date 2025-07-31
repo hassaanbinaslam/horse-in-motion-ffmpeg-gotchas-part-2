@@ -6,13 +6,24 @@ Description: >
 
 Globals:
   Function:
-    Timeout: 60 # Set a longer timeout for video processing
-    MemorySize: 512 # Provide enough memory
+    Timeout: 90 # Increased timeout for video processing
+    MemorySize: 1024 # Increased memory for FFmpeg
 
 Resources:
   # The S3 bucket where our output videos will be stored
   OutputBucket:
     Type: AWS::S3::Bucket
+
+    # Define the Lambda Layer
+  FFmpegLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: ffmpeg-layer
+      Description: FFmpeg static build for video processing
+      ContentUri: layers/ffmpeg-layer.zip # Points to our local zip file
+      CompatibleRuntimes:
+        - python3.12
+        - python3.13
 
   # The Lambda function that will run our code
   FFmpegFunction:
@@ -33,6 +44,10 @@ Resources:
       Policies:
         - S3WritePolicy:
             BucketName: !Ref OutputBucket
+
+      # Attach the layer to the function
+      Layers:
+        - !Ref FFmpegLayer
 
 Outputs:
   OutputBucketName:
