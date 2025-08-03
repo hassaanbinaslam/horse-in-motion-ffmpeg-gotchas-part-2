@@ -18,9 +18,9 @@ Resources:
   FFmpegLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      LayerName: ffmpeg-layer
-      Description: FFmpeg static build for video processing
-      ContentUri: layers/ffmpeg-layer.zip # Points to our local zip file
+      LayerName: custom-ffmpeg-layer
+      Description: Custom FFmpeg build with libx264 and drawtext
+      ContentUri: layers/custom-ffmpeg-layer.zip # Points to our local zip file
       CompatibleRuntimes:
         - python3.12
         - python3.13

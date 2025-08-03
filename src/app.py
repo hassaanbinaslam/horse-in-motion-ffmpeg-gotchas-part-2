@@ -52,9 +52,9 @@ def lambda_handler(event, context):
             "-i",
             input_path,
             "-vf",
-            f"drawtext=fontfile={font_file}:text='The Horse in Motion and FFmpeg Gotchas Part 2':fontcolor=white:fontsize=13:box=1:boxcolor=black@0.8:boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,10)'",
+            f"drawtext=fontfile={font_file}:text='The Horse in Motion and FFmpeg Gotchas Part 3':fontcolor=white:fontsize=13:box=1:boxcolor=black@0.8:boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2:enable='between(t,0,10)'",
             "-c:v",
-            "libopenh264",  # Use the alternate H.264 encoder
+            "libx264",  # THE PAYOFF: We can now use the superior encoder!
             "-r",
             "30",
             "-pix_fmt",
